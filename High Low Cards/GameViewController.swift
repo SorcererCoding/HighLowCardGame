@@ -45,13 +45,13 @@ class GameViewController: UIViewController {
         
         
         currentCard = Int(randomCard())
-        currentCardValue = Int(floor(Double(otherPlayerCurrentCard/4)))
+        currentCardValue = Int(floor(Double(currentCard/4)))
         currentPlayerBoard.removeLast()
-        currentPlayerBoard.append(otherPlayerCurrentCard)
+        currentPlayerBoard.append(currentCard)
         switchPlayer()
         
     }
-    
+    //This function switchs the players when the turn changes
     func switchPlayer (){
         
         swapGameState(isPlayerOne: isCurrentPlayerOne)
@@ -90,7 +90,7 @@ class GameViewController: UIViewController {
                 cardSevenImageView.image = UIImage(named: cardBack)
                 
             default:
-                print("Error - Something has gone amiss")
+               createAlert(title: "Errror", message: "something went wrong")
             }
         }
         
@@ -131,14 +131,14 @@ class GameViewController: UIViewController {
         case 7:
             cardSevenImageView.image = drawnCard
         default:
-            print("Error - No Card Number")
+            createAlert(title: "Error", message: "No Card Number")
+            
         }
         
         currentEmptySlot += 1
         
         if currentCardValue > previousCardValue {
-            print("Current Card Value = " + String(currentCardValue))
-            print("Previous Card Value = " + String(previousCardValue))
+           
             if currentEmptySlot == 8 {
                 endGame()
             }
@@ -199,14 +199,13 @@ class GameViewController: UIViewController {
         case 7:
             cardSevenImageView.image = drawnCard
         default:
-            print("Error - No Card Number")
+           createAlert(title: "Error", message: "No Card Number")
         }
         
         currentEmptySlot += 1
         
         if currentCardValue < previousCardValue {
-            print("Current Card Value = " + String(currentCardValue))
-            print("Previous Card Value = " + String(previousCardValue))
+            
             if currentEmptySlot == 8 {
                 endGame()
             }
@@ -333,19 +332,23 @@ class GameViewController: UIViewController {
     
     func swapGameState (isPlayerOne: Bool) {
         
+        //swaps the current card
         let swapCard = currentCard
         currentCard = otherPlayerCurrentCard
         otherPlayerCurrentCard = swapCard
         
+        //swaps the current card value
         let swapCardValue = currentCardValue
         currentCardValue = otherPlayerCurrentCardValue
         otherPlayerCurrentCardValue = swapCardValue
         
+        //swaps the last card locked in for player
         let swapSlot = currentEmptySlot
         currentEmptySlot = otherPlayerEmptySlot
         startingEmptySlot = otherPlayerEmptySlot
         otherPlayerEmptySlot = swapSlot
         
+        //swaps the current play board
         let swapBoard = currentPlayerBoard
         currentPlayerBoard = otherPlayerBoard
         otherPlayerBoard = swapBoard
@@ -376,7 +379,7 @@ class GameViewController: UIViewController {
                 cardSevenImageView.image = deckPlayerOne[currentPlayerBoard[i]]
                 
             default:
-                print("Error - something went wrong")
+                createAlert(title: "Errror", message: "something went wrong")
                 
             }
             
@@ -387,7 +390,7 @@ class GameViewController: UIViewController {
     }
     
     func endGame() {
-        print("Game Over")
+        
         higherButton.isEnabled = false
         lowerButton.isEnabled = false
         holdButton.isEnabled = false
@@ -409,6 +412,10 @@ class GameViewController: UIViewController {
             
             UserDefaults.standard.set(playerTwoScore, forKey: "Player 2 Score")
         }
+        if let winner = winLabel.text {
+            createAlert(title: "Game Over", message: winner)
+        }
+        
     }
     
     func resetCards() {
@@ -423,9 +430,21 @@ class GameViewController: UIViewController {
             
         }
         currentPlayerBoard = resetBoard
-        print(currentPlayerBoard)
+    
         currentEmptySlot = startingEmptySlot
         switchPlayer()
+    }
+    
+    func createAlert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        
+        let okAction = UIAlertAction(title: "Ok", style: .default) { (action) in
+            alert.dismiss(animated: true, completion: nil)
+        }
+        
+        alert.addAction(okAction)
+        present(alert, animated: true, completion: nil)
+        
     }
     
 }
