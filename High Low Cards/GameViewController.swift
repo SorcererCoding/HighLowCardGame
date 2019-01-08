@@ -10,10 +10,8 @@ import UIKit
 
 class GameViewController: UIViewController {
     
-    
     @IBOutlet weak var playerLabel: UILabel!
-    
-    
+
     @IBOutlet weak var cardOneImageView: UIImageView!
     @IBOutlet weak var cardTwoImageView: UIImageView!
     @IBOutlet weak var cardThreeImageView: UIImageView!
@@ -22,7 +20,6 @@ class GameViewController: UIViewController {
     @IBOutlet weak var cardSixImageView: UIImageView!
     @IBOutlet weak var cardSevenImageView: UIImageView!
 
-    
     @IBOutlet weak var scoreBoardLabel: UILabel!
     @IBOutlet weak var winLabel: UILabel!
     
@@ -38,11 +35,10 @@ class GameViewController: UIViewController {
     var otherPlayerCurrentCardValue = 0
     var otherPlayerEmptySlot = 2
     
-    var otherPlayerBoard : [Int] = []
-    var currentPlayerBoard : [Int] = []
+    var otherPlayerBoard: [Int] = []
+    var currentPlayerBoard: [Int] = []
     
     @IBAction func holdPressed(_ sender: Any) {
-        
         
         currentCard = Int(randomCard())
         currentCardValue = Int(floor(Double(currentCard/4)))
@@ -52,7 +48,7 @@ class GameViewController: UIViewController {
         
     }
     //This function switchs the players when the turn changes
-    func switchPlayer (){
+    func switchPlayer () {
         
         swapGameState(isPlayerOne: isCurrentPlayerOne)
         
@@ -63,7 +59,6 @@ class GameViewController: UIViewController {
         } else {
             playerLabel.text = "Player 2"
         }
-        
         
         var cardBack = ""
         
@@ -93,7 +88,6 @@ class GameViewController: UIViewController {
                createAlert(title: "Errror", message: "something went wrong")
             }
         }
-        
     }
     
     @IBAction func higherPressed(_ sender: Any) {
@@ -104,13 +98,12 @@ class GameViewController: UIViewController {
         
         currentCard = Int(cardNumber)
         
-        
         previousCardValue = currentCardValue
         currentCardValue = Int(floor(Double(cardNumber/4)))
         
         var drawnCard = UIImage()
         
-        if isCurrentPlayerOne{
+        if isCurrentPlayerOne {
             drawnCard = drawACard(deck: deckPlayerOne, index: Int(cardNumber))
         } else {
             drawnCard = drawACard(deck: deckPlayerTwo, index: Int(cardNumber))
@@ -142,21 +135,17 @@ class GameViewController: UIViewController {
             if currentEmptySlot == 8 {
                 endGame()
             }
-            
         } else {
-            Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { (timer) in
+            Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { (_) in
                 self.resetCards()
             }
         }
-        
     }
-    
-    
+
     @IBOutlet weak var holdButton: UIButton!
     @IBOutlet weak var higherButton: UIButton!
     @IBOutlet weak var lowerButton: UIButton!
-    
-    
+
     @IBAction func resetScores(_ sender: Any) {
         UserDefaults.standard.set(0, forKey: "Player 1 Score")
         UserDefaults.standard.set(0, forKey: "Player 2 Score")
@@ -171,14 +160,13 @@ class GameViewController: UIViewController {
         previousCard = currentCard
         
         currentCard = Int(cardNumber)
-        
-        
+    
         previousCardValue = currentCardValue
         currentCardValue = Int(floor(Double(cardNumber/4)))
         
         var drawnCard = UIImage()
         
-        if isCurrentPlayerOne{
+        if isCurrentPlayerOne {
             drawnCard = drawACard(deck: deckPlayerOne, index: Int(cardNumber))
         } else {
             drawnCard = drawACard(deck: deckPlayerTwo, index: Int(cardNumber))
@@ -211,25 +199,20 @@ class GameViewController: UIViewController {
             }
             
         } else {
-            Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { (timer) in
+            Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { (_) in
                 self.resetCards()
             }
         }
-        
-        
     }
-    
-    
-    func randomCard () -> UInt32  {
+
+    func randomCard () -> UInt32 {
         let cardNumber = arc4random_uniform(50) + 2
         
-        if currentPlayerBoard.count > 0{
-            for card in 0...currentPlayerBoard.count - 1 {
-                
-                if cardNumber == currentPlayerBoard[card] {
+        if currentPlayerBoard.isEmpty {
+    
+        } else {
+            for card in 0...currentPlayerBoard.count - 1 where cardNumber == currentPlayerBoard[card] {
                     return randomCard()
-                }
-                
             }
         }
         if cardNumber == currentCard {
@@ -239,15 +222,14 @@ class GameViewController: UIViewController {
         return cardNumber
     }
     
-    
     @IBAction func newGame(_ sender: Any) {
         winLabel.isHidden = true
         
         setupGame()
     }
     
-    var deckPlayerOne : [UIImage] = []
-    var deckPlayerTwo : [UIImage] = []
+    var deckPlayerOne: [UIImage] = []
+    var deckPlayerTwo: [UIImage] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -272,13 +254,12 @@ class GameViewController: UIViewController {
         otherPlayerCurrentCardValue = 0
         otherPlayerEmptySlot = 2
         
-        
         higherButton.isEnabled = true
         lowerButton.isEnabled = true
         holdButton.isEnabled = true
         
         //Build Decks
-        if deckPlayerOne.count == 0 {
+        if deckPlayerOne.isEmpty {
             for cardNumber in 2...14 {
                 
                 deckPlayerOne.append(UIImage(named: "\(cardNumber)_of_clubs")!)
@@ -327,7 +308,6 @@ class GameViewController: UIViewController {
         
         return drawnCard
     }
-    
     
     func swapGameState (isPlayerOne: Bool) {
         
@@ -379,13 +359,8 @@ class GameViewController: UIViewController {
                 
             default:
                 createAlert(title: "Errror", message: "something went wrong")
-                
             }
-            
         }
-        
-        
-        
     }
     
     func endGame() {
@@ -401,7 +376,6 @@ class GameViewController: UIViewController {
             let playerOneScore = UserDefaults.standard.integer(forKey: "Player 1 Score") + 1
 
             UserDefaults.standard.set(playerOneScore, forKey: "Player 1 Score")
-            
             
         } else {
             winLabel.isHidden = false
@@ -421,7 +395,7 @@ class GameViewController: UIViewController {
  
         currentCard = currentPlayerBoard[startingEmptySlot - 2]
         currentCardValue = Int(floor(Double(currentCard/4)))
-        var resetBoard : [Int] = []
+        var resetBoard: [Int] = []
         
         for slot in 0...startingEmptySlot - 2 {
             
@@ -437,7 +411,7 @@ class GameViewController: UIViewController {
     func createAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         
-        let okAction = UIAlertAction(title: "Ok", style: .default) { (action) in
+        let okAction = UIAlertAction(title: "Ok", style: .default) { (_) in
             alert.dismiss(animated: true, completion: nil)
         }
         
@@ -445,6 +419,4 @@ class GameViewController: UIViewController {
         present(alert, animated: true, completion: nil)
         
     }
-    
 }
-
