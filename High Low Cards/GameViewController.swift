@@ -73,9 +73,9 @@ class GameViewController: UIViewController {
             cardBack = "redBack"
         }
         
-        for i in currentEmptySlot...7 {
+        for slot in currentEmptySlot...7 {
             
-            switch i {
+            switch slot {
             case 2:
                 cardTwoImageView.image = UIImage(named: cardBack)
             case 3:
@@ -224,9 +224,9 @@ class GameViewController: UIViewController {
         let cardNumber = arc4random_uniform(50) + 2
         
         if currentPlayerBoard.count > 0{
-            for i in 0...currentPlayerBoard.count - 1 {
+            for card in 0...currentPlayerBoard.count - 1 {
                 
-                if cardNumber == currentPlayerBoard[i] {
+                if cardNumber == currentPlayerBoard[card] {
                     return randomCard()
                 }
                 
@@ -279,17 +279,16 @@ class GameViewController: UIViewController {
         
         //Build Decks
         if deckPlayerOne.count == 0 {
-            for i in 2...14 {
+            for cardNumber in 2...14 {
                 
-                deckPlayerOne.append(UIImage(named: "\(i)_of_clubs")!)
-                deckPlayerOne.append(UIImage(named: "\(i)_of_diamonds")!)
-                deckPlayerOne.append(UIImage(named: "\(i)_of_hearts")!)
-                deckPlayerOne.append(UIImage(named: "\(i)_of_spades")!)
-                
-                deckPlayerTwo.append(UIImage(named: "\(i)_of_clubs")!)
-                deckPlayerTwo.append(UIImage(named: "\(i)_of_diamonds")!)
-                deckPlayerTwo.append(UIImage(named: "\(i)_of_hearts")!)
-                deckPlayerTwo.append(UIImage(named: "\(i)_of_spades")!)
+                deckPlayerOne.append(UIImage(named: "\(cardNumber)_of_clubs")!)
+                deckPlayerOne.append(UIImage(named: "\(cardNumber)_of_diamonds")!)
+                deckPlayerOne.append(UIImage(named: "\(cardNumber)_of_hearts")!)
+                deckPlayerOne.append(UIImage(named: "\(cardNumber)_of_spades")!)
+                deckPlayerTwo.append(UIImage(named: "\(cardNumber)_of_clubs")!)
+                deckPlayerTwo.append(UIImage(named: "\(cardNumber)_of_diamonds")!)
+                deckPlayerTwo.append(UIImage(named: "\(cardNumber)_of_hearts")!)
+                deckPlayerTwo.append(UIImage(named: "\(cardNumber)_of_spades")!)
             }
         }
         
@@ -353,30 +352,30 @@ class GameViewController: UIViewController {
         currentPlayerBoard = otherPlayerBoard
         otherPlayerBoard = swapBoard
         
-        for i in 0...currentPlayerBoard.count - 1 {
+        for cardImage in 0...currentPlayerBoard.count - 1 {
             
-            switch i {
+            switch cardImage {
                 
             case 0:
-                cardOneImageView.image = deckPlayerOne[currentPlayerBoard[i]]
+                cardOneImageView.image = deckPlayerOne[currentPlayerBoard[cardImage]]
                 
             case 1:
-                cardTwoImageView.image = deckPlayerOne[currentPlayerBoard[i]]
+                cardTwoImageView.image = deckPlayerOne[currentPlayerBoard[cardImage]]
                 
             case 2:
-                cardThreeImageView.image = deckPlayerOne[currentPlayerBoard[i]]
+                cardThreeImageView.image = deckPlayerOne[currentPlayerBoard[cardImage]]
                 
             case 3:
-                cardFourImageView.image = deckPlayerOne[currentPlayerBoard[i]]
+                cardFourImageView.image = deckPlayerOne[currentPlayerBoard[cardImage]]
                 
             case 4:
-                cardFiveImageView.image = deckPlayerOne[currentPlayerBoard[i]]
+                cardFiveImageView.image = deckPlayerOne[currentPlayerBoard[cardImage]]
                 
             case 5:
-                cardSixImageView.image = deckPlayerOne[currentPlayerBoard[i]]
+                cardSixImageView.image = deckPlayerOne[currentPlayerBoard[cardImage]]
                 
             case 6:
-                cardSevenImageView.image = deckPlayerOne[currentPlayerBoard[i]]
+                cardSevenImageView.image = deckPlayerOne[currentPlayerBoard[cardImage]]
                 
             default:
                 createAlert(title: "Errror", message: "something went wrong")
@@ -424,9 +423,9 @@ class GameViewController: UIViewController {
         currentCardValue = Int(floor(Double(currentCard/4)))
         var resetBoard : [Int] = []
         
-        for i in 0...startingEmptySlot - 2 {
+        for slot in 0...startingEmptySlot - 2 {
             
-            resetBoard.append(currentPlayerBoard[i])
+            resetBoard.append(currentPlayerBoard[slot])
             
         }
         currentPlayerBoard = resetBoard
